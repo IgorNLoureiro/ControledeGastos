@@ -3,6 +3,9 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace ExpenseControl.Api.Controllers;
 
+/// <summary>
+/// Endpoint de consulta dos totais financeiros por pessoa e do sistema como um todo.
+/// </summary>
 [ApiController]
 [Route("api/[controller]")]
 public class SummaryController : ControllerBase
@@ -14,6 +17,9 @@ public class SummaryController : ControllerBase
         _service = service;
     }
 
+    /// <summary>
+    /// Retorna o resumo financeiro de cada pessoa cadastrada, junto com o total geral do sistema.
+    /// </summary>
     [HttpGet]
     public async Task<IActionResult> Get()
     {

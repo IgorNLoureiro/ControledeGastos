@@ -4,6 +4,9 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace ExpenseControl.Api.Controllers;
 
+/// <summary>
+/// Endpoints para cadastro, listagem e remoção de pessoas.
+/// </summary>
 [ApiController]
 [Route("api/[controller]")]
 public class PersonController : ControllerBase
@@ -15,6 +18,9 @@ public class PersonController : ControllerBase
         _service = service;
     }
 
+    /// <summary>
+    /// Cadastra uma nova pessoa.
+    /// </summary>
     [HttpPost]
     public async Task<IActionResult> Create(Person person)
     {
@@ -22,6 +28,9 @@ public class PersonController : ControllerBase
         return CreatedAtAction(nameof(GetAll), new { id = created.Id }, created);
     }
 
+    /// <summary>
+    /// Lista todas as pessoas cadastradas.
+    /// </summary>
     [HttpGet]
     public async Task<IActionResult> GetAll()
     {
@@ -29,6 +38,10 @@ public class PersonController : ControllerBase
         return Ok(people);
     }
 
+    /// <summary>
+    /// Remove uma pessoa pelo Id. As transações vinculadas a ela são removidas
+    /// automaticamente pelo cascade delete configurado no banco.
+    /// </summary>
     [HttpDelete("{id}")]
     public async Task<IActionResult> Delete(Guid id)
     {

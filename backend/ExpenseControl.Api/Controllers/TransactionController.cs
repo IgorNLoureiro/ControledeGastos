@@ -4,6 +4,9 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace ExpenseControl.Api.Controllers;
 
+/// <summary>
+/// Endpoints para cadastro e listagem de transações financeiras.
+/// </summary>
 [ApiController]
 [Route("api/[controller]")]
 public class TransactionController : ControllerBase
@@ -15,6 +18,10 @@ public class TransactionController : ControllerBase
         _service = service;
     }
 
+    /// <summary>
+    /// Cadastra uma nova transação. Retorna erro se a pessoa não existir ou se
+    /// ela for menor de idade e a transação for do tipo Receita.
+    /// </summary>
     [HttpPost]
     public async Task<IActionResult> Create(Transaction transaction)
     {
@@ -25,6 +32,9 @@ public class TransactionController : ControllerBase
         return CreatedAtAction(nameof(GetAll), new { id = created!.Id }, created);
     }
 
+    /// <summary>
+    /// Lista todas as transações cadastradas.
+    /// </summary>
     [HttpGet]
     public async Task<IActionResult> GetAll()
     {
