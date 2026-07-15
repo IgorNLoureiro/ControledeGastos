@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using ExpenseControl.Api.Data;
+using ExpenseControl.Api.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,6 +13,11 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddDbContext<AppDbContext>(options => 
 options.UseSqlite("Data Source=expensecontrol.db"));
+
+builder.Services.AddDbContext<AppDbContext>(options => 
+    options.UseSqlite("Data Source=expensecontrol.db"));
+
+builder.Services.AddScoped<PersonService>();
 
 var app = builder.Build();
 
