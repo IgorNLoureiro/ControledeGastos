@@ -19,6 +19,8 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 
 builder.Services.AddScoped<PersonService>();
 
+builder.Services.AddScoped<TransactionService>();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
