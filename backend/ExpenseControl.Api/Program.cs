@@ -21,6 +21,8 @@ builder.Services.AddScoped<PersonService>();
 
 builder.Services.AddScoped<TransactionService>();
 
+builder.Services.AddScoped<SummaryService>();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
