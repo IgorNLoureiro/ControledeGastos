@@ -12,9 +12,6 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddDbContext<AppDbContext>(options => 
-options.UseSqlite("Data Source=expensecontrol.db"));
-
-builder.Services.AddDbContext<AppDbContext>(options => 
     options.UseSqlite("Data Source=expensecontrol.db"));
 
 builder.Services.AddScoped<PersonService>();
@@ -22,6 +19,12 @@ builder.Services.AddScoped<PersonService>();
 builder.Services.AddScoped<TransactionService>();
 
 builder.Services.AddScoped<SummaryService>();
+
+builder.Services.AddCors(options =>
+    options.AddPolicy("Frontend", policy => policy
+        .WithOrigins("http://localhost:5173")
+        .AllowAnyMethod()
+        .AllowAnyHeader()));
 
 var app = builder.Build();
 
@@ -33,6 +36,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseCors("Frontend");
 
 app.UseAuthorization();
 
