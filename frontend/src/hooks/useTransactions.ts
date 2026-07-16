@@ -3,6 +3,10 @@ import { ApiError } from "../api/client";
 import { transactionApi } from "../api/services";
 import type { NewTransaction, Transaction } from "../types";
 
+/**
+ * Hook responsável por carregar e cadastrar transações, mantendo a lista
+ * sempre sincronizada com o back-end após cada operação.
+ */
 export function useTransactions() {
   const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [loading, setLoading] = useState(true);
@@ -22,6 +26,7 @@ export function useTransactions() {
   }, []);
 
   useEffect(() => {
+    // carrega a lista assim que o hook monta, sem esperar uma ação do usuário
     // eslint-disable-next-line react-hooks/set-state-in-effect
     reload();
   }, [reload]);

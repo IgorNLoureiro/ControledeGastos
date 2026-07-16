@@ -2,6 +2,10 @@ import type { ApiErrorBody } from "../types";
 
 const API_BASE_URL = import.meta.env.VITE_API_URL ?? "http://localhost:5011";
 
+/**
+ * Erro lançado quando a API retorna um status HTTP de falha (4xx/5xx).
+ * Guarda o status code para permitir tratamento diferenciado, se necessário.
+ */
 export class ApiError extends Error {
   status: number;
   constructor(status: number, message: string) {
@@ -11,6 +15,10 @@ export class ApiError extends Error {
   }
 }
 
+/**
+ * Executa uma requisição HTTP para a API, tratando erros e serialização de forma centralizada.
+ * Lança ApiError quando a resposta não é bem-sucedida.
+ */
 async function request<T>(path: string, options?: RequestInit): Promise<T> {
   const response = await fetch(`${API_BASE_URL}${path}`, {
     ...options,
@@ -23,7 +31,7 @@ async function request<T>(path: string, options?: RequestInit): Promise<T> {
       const body: ApiErrorBody = await response.json();
       message = body.message ?? message;
     } catch {
-      // corpo vazio ou não-JSON
+      // corpo vazio ou não-JSON — mantém o statusText como mensagem de fallback
     }
     throw new ApiError(response.status, message);
   }
@@ -32,6 +40,9 @@ async function request<T>(path: string, options?: RequestInit): Promise<T> {
   return response.json() as Promise<T>;
 }
 
+/**
+ * Cliente HTTP simplificado para consumir a API do back-end.
+ */
 export const api = {
   get: <T>(path: string) => request<T>(path),
   post: <T>(path: string, body: unknown) =>

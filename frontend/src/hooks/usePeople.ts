@@ -3,6 +3,10 @@ import { ApiError } from "../api/client";
 import { personApi } from "../api/services";
 import type { NewPerson, Person } from "../types";
 
+/**
+ * Hook responsável por carregar, cadastrar e remover pessoas, mantendo a lista
+ * sempre sincronizada com o back-end após cada operação.
+ */
 export function usePeople() {
   const [people, setPeople] = useState<Person[]>([]);
   const [loading, setLoading] = useState(true);
@@ -22,6 +26,7 @@ export function usePeople() {
   }, []);
 
   useEffect(() => {
+    // carrega a lista assim que o hook monta, sem esperar uma ação do usuário
     // eslint-disable-next-line react-hooks/set-state-in-effect
     reload();
   }, [reload]);

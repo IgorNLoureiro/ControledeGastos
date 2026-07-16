@@ -8,6 +8,10 @@ interface SummaryPanelProps {
   error: string | null;
 }
 
+/**
+ * Painel de consulta de totais: exibe o resumo financeiro de cada pessoa
+ * e o total geral do sistema.
+ */
 export function SummaryPanel({ summary, loading, error }: SummaryPanelProps) {
   return (
     <section className={styles.panel}>

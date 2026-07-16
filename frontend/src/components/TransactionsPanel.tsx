@@ -12,6 +12,10 @@ interface TransactionsPanelProps {
   onCreate: (transaction: NewTransaction) => Promise<void>;
 }
 
+/**
+ * Painel de cadastro e listagem de transações. Reflete no formulário a regra
+ * de negócio de que pessoas menores de idade só podem lançar despesas.
+ */
 export function TransactionsPanel({ people, transactions, loading, error, onCreate }: TransactionsPanelProps) {
   const [description, setDescription] = useState("");
   const [amount, setAmount] = useState("");
@@ -32,6 +36,8 @@ export function TransactionsPanel({ people, transactions, loading, error, onCrea
   function handlePersonChange(id: string) {
     setPersonId(id);
     const person = peopleById.get(id);
+    // se a pessoa selecionada for menor de idade e "Receita" já estava marcado,
+    // reseta pra "Despesa" antes mesmo do envio, refletindo a regra de negócio na UI
     if (person && person.age < 18 && type === "Receita") {
       setType("Despesa");
     }
@@ -141,6 +147,7 @@ export function TransactionsPanel({ people, transactions, loading, error, onCrea
       {!loading && transactions.length > 0 && (
         <ul className={styles.list}>
           {[...transactions]
+            // ordena da mais recente pra mais antiga, pra o usuário ver os lançamentos novos primeiro
             .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
             .map((tx) => {
               const person = peopleById.get(tx.personId);
@@ -151,7 +158,7 @@ export function TransactionsPanel({ people, transactions, loading, error, onCrea
                     {tx.description} — {person?.name ?? "—"} — {formatDate(tx.createdAt)}
                   </span>
                   <span className={isIncome ? styles.income : styles.expense}>
-                    {isIncome ? "+" : "-"} {formatMoney(tx.amount)}
+                    {isIncome ? "+" : "−"} {formatMoney(tx.amount)}
                   </span>
                 </li>
               );

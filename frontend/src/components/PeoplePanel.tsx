@@ -11,6 +11,9 @@ interface PeoplePanelProps {
   onRemove: (id: string) => Promise<void>;
 }
 
+/**
+ * Painel de cadastro, listagem e remoção de pessoas.
+ */
 export function PeoplePanel({ people, loading, error, onCreate, onRemove }: PeoplePanelProps) {
   const [name, setName] = useState("");
   const [age, setAge] = useState("");
@@ -46,6 +49,7 @@ export function PeoplePanel({ people, loading, error, onCreate, onRemove }: Peop
   }
 
   async function handleRemove(person: Person) {
+    // confirmação explícita porque a remoção apaga as transações da pessoa junto (cascade delete)
     if (!window.confirm(`Remover ${person.name}? As transações dela também serão apagadas.`)) return;
     await onRemove(person.id);
   }

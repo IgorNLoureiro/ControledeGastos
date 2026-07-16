@@ -9,6 +9,10 @@ import { useSummary } from "./hooks/useSummary";
 
 type Tab = "pessoas" | "transacoes" | "resumo";
 
+/**
+ * Componente raiz da aplicação. Controla a navegação por abas (Pessoas,
+ * Transações, Resumo) e orquestra os hooks de dados de cada uma.
+ */
 function App() {
   const [tab, setTab] = useState<Tab>("pessoas");
   const [summaryRefreshKey, setSummaryRefreshKey] = useState(0);
@@ -19,11 +23,14 @@ function App() {
 
   async function handleCreatePerson(name: string, age: number) {
     await peopleState.create({ name, age });
+    // atualiza o resumo, já que uma nova pessoa muda os totais gerais
     setSummaryRefreshKey((k) => k + 1);
   }
 
   async function handleRemovePerson(id: string) {
     await peopleState.remove(id);
+    // as transações da pessoa removida somem via cascade delete no back-end,
+    // então recarrega a lista de transações pra refletir isso no front também
     await transactionsState.reload();
     setSummaryRefreshKey((k) => k + 1);
   }
