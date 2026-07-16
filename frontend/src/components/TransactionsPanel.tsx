@@ -2,6 +2,7 @@ import { useMemo, useState, type FormEvent } from "react";
 import { ApiError } from "../api/client";
 import type { NewTransaction, Person, Transaction, TransactionType } from "../types";
 import { formatDate, formatMoney } from "../utils/format";
+import styles from "./TransactionsPanel.module.css";
 
 interface TransactionsPanelProps {
   people: Person[];
@@ -68,13 +69,13 @@ export function TransactionsPanel({ people, transactions, loading, error, onCrea
   }
 
   return (
-    <section>
+    <section className={styles.panel}>
       <h2>Transações</h2>
 
       {people.length === 0 && !loading && <p>Cadastre uma pessoa antes de lançar uma transação.</p>}
 
-      <form onSubmit={handleSubmit}>
-        <div>
+      <form className={styles.form} onSubmit={handleSubmit}>
+        <div className={styles.field}>
           <label htmlFor="tx-description">Descrição</label>
           <input
             id="tx-description"
@@ -84,7 +85,7 @@ export function TransactionsPanel({ people, transactions, loading, error, onCrea
             disabled={submitting || people.length === 0}
           />
         </div>
-        <div>
+        <div className={styles.field}>
           <label htmlFor="tx-amount">Valor</label>
           <input
             id="tx-amount"
@@ -96,7 +97,7 @@ export function TransactionsPanel({ people, transactions, loading, error, onCrea
             disabled={submitting || people.length === 0}
           />
         </div>
-        <div>
+        <div className={styles.field}>
           <label htmlFor="tx-person">Pessoa</label>
           <select
             id="tx-person"
@@ -112,7 +113,7 @@ export function TransactionsPanel({ people, transactions, loading, error, onCrea
             ))}
           </select>
         </div>
-        <div>
+        <div className={styles.field}>
           <label htmlFor="tx-type">Tipo</label>
           <select
             id="tx-type"
@@ -125,29 +126,33 @@ export function TransactionsPanel({ people, transactions, loading, error, onCrea
               Receita
             </option>
           </select>
-          {receitaDisabled && <span> Menor de idade só pode cadastrar despesas.</span>}
+          {receitaDisabled && <span className={styles.hint}>Menor de idade só pode cadastrar despesas.</span>}
         </div>
-        <button type="submit" disabled={submitting || people.length === 0}>
+        <button className={styles.button} type="submit" disabled={submitting || people.length === 0}>
           {submitting ? "Lançando…" : "Lançar transação"}
         </button>
       </form>
-      {formError && <p>{formError}</p>}
+      {formError && <p className={styles.error}>{formError}</p>}
 
       {loading && <p>Carregando transações…</p>}
-      {error && <p>{error}</p>}
+      {error && <p className={styles.error}>{error}</p>}
       {!loading && !error && transactions.length === 0 && <p>Nenhuma transação registrada ainda.</p>}
 
       {!loading && transactions.length > 0 && (
-        <ul>
+        <ul className={styles.list}>
           {[...transactions]
             .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
             .map((tx) => {
               const person = peopleById.get(tx.personId);
               const isIncome = tx.type === "Receita";
               return (
-                <li key={tx.id}>
-                  {tx.description} — {person?.name ?? "—"} — {formatDate(tx.createdAt)} —{" "}
-                  {isIncome ? "+" : "−"} {formatMoney(tx.amount)}
+                <li key={tx.id} className={styles.listItem}>
+                  <span>
+                    {tx.description} — {person?.name ?? "—"} — {formatDate(tx.createdAt)}
+                  </span>
+                  <span className={isIncome ? styles.income : styles.expense}>
+                    {isIncome ? "+" : "-"} {formatMoney(tx.amount)}
+                  </span>
                 </li>
               );
             })}

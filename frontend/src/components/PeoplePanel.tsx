@@ -1,6 +1,7 @@
 import { useState, type FormEvent } from "react";
 import { ApiError } from "../api/client";
 import type { Person } from "../types";
+import styles from "./PeoplePanel.module.css";
 
 interface PeoplePanelProps {
   people: Person[];
@@ -50,11 +51,11 @@ export function PeoplePanel({ people, loading, error, onCreate, onRemove }: Peop
   }
 
   return (
-    <section>
+    <section className={styles.panel}>
       <h2>Pessoas</h2>
 
-      <form onSubmit={handleSubmit}>
-        <div>
+      <form className={styles.form} onSubmit={handleSubmit}>
+        <div className={styles.field}>
           <label htmlFor="person-name">Nome</label>
           <input
             id="person-name"
@@ -64,7 +65,7 @@ export function PeoplePanel({ people, loading, error, onCreate, onRemove }: Peop
             disabled={submitting}
           />
         </div>
-        <div>
+        <div className={styles.field}>
           <label htmlFor="person-age">Idade</label>
           <input
             id="person-age"
@@ -75,22 +76,22 @@ export function PeoplePanel({ people, loading, error, onCreate, onRemove }: Peop
             disabled={submitting}
           />
         </div>
-        <button type="submit" disabled={submitting}>
+        <button className={styles.button} type="submit" disabled={submitting}>
           {submitting ? "Registrando…" : "Registrar pessoa"}
         </button>
       </form>
-      {formError && <p>{formError}</p>}
+      {formError && <p className={styles.error}>{formError}</p>}
 
       {loading && <p>Carregando pessoas…</p>}
-      {error && <p>{error}</p>}
+      {error && <p className={styles.error}>{error}</p>}
       {!loading && !error && people.length === 0 && <p>Nenhuma pessoa cadastrada ainda.</p>}
 
       {!loading && people.length > 0 && (
-        <ul>
+        <ul className={styles.list}>
           {people.map((person) => (
-            <li key={person.id}>
+            <li key={person.id} className={styles.listItem}>
               {person.name} — {person.age} anos {person.age < 18 && "(menor)"}
-              <button type="button" onClick={() => handleRemove(person)}>
+              <button className={styles.removeButton} type="button" onClick={() => handleRemove(person)}>
                 remover
               </button>
             </li>

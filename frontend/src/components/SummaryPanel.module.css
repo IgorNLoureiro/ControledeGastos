@@ -1,0 +1,41 @@
+.panel {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.table th,
+.table td {
+  text-align: left;
+  padding: 0.6rem 0.75rem;
+  border-bottom: 1px solid #eee;
+}
+
+.table th {
+  font-size: 0.85rem;
+  color: #666;
+  border-bottom: 1px solid #ddd;
+}
+
+.totalRow td {
+  border-top: 2px solid #111;
+  font-weight: 600;
+}
+
+.income {
+  color: #0a7d2c;
+}
+
+.expense {
+  color: #c00;
+}
+
+.error {
+  color: #c00;
+  font-size: 0.9rem;
+}

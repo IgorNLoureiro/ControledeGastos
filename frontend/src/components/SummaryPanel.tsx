@@ -1,5 +1,6 @@
 import type { SummaryResponse } from "../types";
 import { formatMoney } from "../utils/format";
+import styles from "./SummaryPanel.module.css";
 
 interface SummaryPanelProps {
   summary: SummaryResponse | null;
@@ -9,15 +10,15 @@ interface SummaryPanelProps {
 
 export function SummaryPanel({ summary, loading, error }: SummaryPanelProps) {
   return (
-    <section>
+    <section className={styles.panel}>
       <h2>Resumo</h2>
 
       {loading && <p>Calculando totais…</p>}
-      {error && <p>{error}</p>}
+      {error && <p className={styles.error}>{error}</p>}
       {!loading && !error && summary && summary.people.length === 0 && <p>Nenhuma pessoa cadastrada ainda.</p>}
 
       {!loading && !error && summary && summary.people.length > 0 && (
-        <table>
+        <table className={styles.table}>
           <thead>
             <tr>
               <th>Pessoa</th>
@@ -30,17 +31,15 @@ export function SummaryPanel({ summary, loading, error }: SummaryPanelProps) {
             {summary.people.map((p) => (
               <tr key={p.personId}>
                 <td>{p.name}</td>
-                <td>{formatMoney(p.totalIncome)}</td>
-                <td>{formatMoney(p.totalExpense)}</td>
+                <td className={styles.income}>{formatMoney(p.totalIncome)}</td>
+                <td className={styles.expense}>{formatMoney(p.totalExpense)}</td>
                 <td>{formatMoney(p.balance)}</td>
               </tr>
             ))}
-            <tr>
-              <td>
-                <strong>Total geral</strong>
-              </td>
-              <td>{formatMoney(summary.total.totalIncome)}</td>
-              <td>{formatMoney(summary.total.totalExpense)}</td>
+            <tr className={styles.totalRow}>
+              <td>Total geral</td>
+              <td className={styles.income}>{formatMoney(summary.total.totalIncome)}</td>
+              <td className={styles.expense}>{formatMoney(summary.total.totalExpense)}</td>
               <td>{formatMoney(summary.total.balance)}</td>
             </tr>
           </tbody>

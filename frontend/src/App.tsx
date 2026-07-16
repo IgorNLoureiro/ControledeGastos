@@ -1,4 +1,5 @@
 import { useState } from "react";
+import styles from "./App.module.css";
 import { PeoplePanel } from "./components/PeoplePanel";
 import { TransactionsPanel } from "./components/TransactionsPanel";
 import { SummaryPanel } from "./components/SummaryPanel";
@@ -33,13 +34,31 @@ function App() {
   }
 
   return (
-    <div>
-      <h1>Controle de Gastos Residenciais</h1>
+    <div className={styles.app}>
+      <h1 className={styles.title}>Controle de Gastos Residenciais</h1>
 
-      <nav>
-        <button type="button" onClick={() => setTab("pessoas")}>Pessoas</button>
-        <button type="button" onClick={() => setTab("transacoes")}>Transações</button>
-        <button type="button" onClick={() => setTab("resumo")}>Resumo</button>
+      <nav className={styles.nav}>
+        <button
+          type="button"
+          className={tab === "pessoas" ? styles.navButtonActive : styles.navButton}
+          onClick={() => setTab("pessoas")}
+        >
+          Pessoas
+        </button>
+        <button
+          type="button"
+          className={tab === "transacoes" ? styles.navButtonActive : styles.navButton}
+          onClick={() => setTab("transacoes")}
+        >
+          Transações
+        </button>
+        <button
+          type="button"
+          className={tab === "resumo" ? styles.navButtonActive : styles.navButton}
+          onClick={() => setTab("resumo")}
+        >
+          Resumo
+        </button>
       </nav>
 
       {tab === "pessoas" && (
